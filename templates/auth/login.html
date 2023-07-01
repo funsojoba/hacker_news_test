@@ -1,0 +1,19 @@
+{% extends "news/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <form>
+        <div class="form-input">
+            <label> Username</label>
+            <input name="username" placeholder="johndoe" type="text" />
+        </div>
+        <div class="form-input">
+            <label> Password</label>
+            <input name="password" placeholder="******" type="password" />
+        </div>
+        <button class="button-white">Log in</button>
+    </form>
+</div>
+
+{% endblock content %}
