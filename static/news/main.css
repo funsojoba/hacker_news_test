@@ -83,7 +83,7 @@ body{
 }
 nav{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     padding:15px 0;
     margin-bottom: 30px;
@@ -91,9 +91,9 @@ nav{
 }
 
 nav .nav-text{
-    flex: 3;
+    flex: 1;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 nav .nav-text input{
@@ -106,8 +106,7 @@ nav .nav-text input{
 .filter-wrapper{
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
-    padding: 30px;
+    flex: 1;
 }
 
 .filter-wrapper .filter{
@@ -122,11 +121,13 @@ nav .nav-text input{
 
 
 nav .logo-wrapper{
-    flex: 2;
+    flex: 1;
 }
 
-nav .logo-wrapper .logo{
+nav .logo-wrapper .logo a{
     color: #003d98;
+    display: inline-block;
+    text-decoration: none;
 }
 
 nav .nav-bugger{
@@ -191,15 +192,32 @@ nav .nav-bugger{
 
 body{
     background: #121826;
+    position: relative;
+    min-height: 100vh;
 }
 
-.container{
+.container .search-bar{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: #191F2D;
+    padding: 10px;
+    width: 100vw;
+}
+
+.container .search-bar .nav-form{
+    flex: 1;
+}
+
+.card-wrapper{
     display: flex;
     flex-wrap: wrap;
+    padding:  30px 30px 80px;
+    justify-content: center;
 }
 
-.container .card{
-    width: 340px;
+.card-wrapper .card{
+    width: 300px;
     padding: 20px;
     margin: 10px;
     background-image: linear-gradient(45deg, #191F2D 0%, #282F3D 100%);
@@ -208,25 +226,26 @@ body{
     color: #fff;
     cursor: pointer;
     transition: all ease-in 100ms;
+    text-decoration: none;
 }
 
-.container .card:hover{
+.card-wrapper .card:hover{
     transform: scale(1.05);
 }
 
 
-.container .card h2{
+.card-wrapper .card h2{
     margin-bottom: 15px;
 }
 
-.container .card .info{
+.card-wrapper .card .info{
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
     align-items: center;
 }
 
-.container .card .score-wrapper{
+.card-wrapper .card .score-wrapper{
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
@@ -253,4 +272,58 @@ body{
     background: #48463f;
     padding: 5px 10px;
     border-radius: 5px;
+}
+
+.form-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+}
+
+.form-wrapper form{
+    width: 500px;
+    padding: 20px;
+    margin: 10px;
+    background-image: linear-gradient(45deg, #191F2D 0%, #282F3D 100%);
+    border-radius: 20px;
+    border: solid 1px #262C3A;
+    color: #fff;
+}
+.form-wrapper form h2{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-wrapper form .form-input{
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.forgot-pwd{
+    margin-top: 20px;
+}
+
+.forgot-pwd a{
+    display: inline-block;
+    color: #06cdff;
+    text-decoration: none;
+}
+
+footer{
+    background: #262C3A;
+    color: #4d4d4d;
+    padding: 20px;
+    margin-top: 50px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }

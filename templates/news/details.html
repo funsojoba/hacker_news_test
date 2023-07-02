@@ -4,25 +4,9 @@
 {% block content %}
 
 <div class="container">
-    <div class="search-bar">
-        <div class="nav-form">
-            <form>
-                <input type="search" placeholder="search" name="search"/>
-            </form>
-        </div>
-        <div class="filter-wrapper">
-            <div class="filter">
-                <small>Filter</div>
-                <button class="button-white">Story</button>
-                <button class="button-white">Story</button>
-                <button class="button-white">Story</button>
-            </div>
-        </div>
-    </div>
-
     <div class="card-wrapper">
         {% for el in data%}
-            <a class="card" href="{% url 'details' el.id %}">
+            <a class="card" href="">
                 <h2>{{el.title}}</h2>
                 <p>{{el.text|truncatechars:100}}</p>
                 <div class="info">
