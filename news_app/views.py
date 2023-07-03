@@ -41,3 +41,7 @@ def home(request):
 
 def details(request, id):
     return render(request, 'news/details.html')
+
+
+def create_post(request):
+    return render(request, 'news/create.html')

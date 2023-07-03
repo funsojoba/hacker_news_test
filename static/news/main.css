@@ -18,6 +18,7 @@ html{
     padding: 10px 20px;
     text-decoration: none;
     transition: all 100ms ease-in;
+    border: solid 1px #005AE2;
     
 }
 
@@ -300,12 +301,13 @@ body{
     flex-direction: column;
 }
 
-input{
+input, textarea, select{
     padding: 10px 15px;
     border: none;
     border-radius: 10px;
     margin-bottom: 10px;
 }
+
 
 .forgot-pwd{
     margin-top: 20px;
