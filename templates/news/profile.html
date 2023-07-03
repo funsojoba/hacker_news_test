@@ -1,0 +1,27 @@
+{% extends "news/base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card-wrapper">
+        <div class="profile-card">
+            <small>First Name</small>
+            <h2>{{first_name}}</h2>
+            <hr>
+            <small>Last Name</small>
+            <h2>{{last_name}}</h2>
+            <hr>
+            <small>Email</small>
+            <h2>{{email}}</h2>
+            <hr>
+            <small>Username</small>
+            <h2>{{username}}</h2>
+            <hr>
+            <small>No. of posts</small>
+            <h2>{{number_of_posts}}</h2>
+        </div>
+    </div>
+</div> 
+
+{% endblock content %}

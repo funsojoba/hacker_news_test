@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
-# from .models import *
-# from .form import OrderForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.utils import timezone
+
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -33,7 +33,8 @@ def home(request):
 
     context ={
         'year':timezone.now().year,
-        'data': data
+        'data': data,
+        'user': request.user
     }
     return render(request, 'news/index.html', context)
 
@@ -45,3 +46,20 @@ def details(request, id):
 
 def create_post(request):
     return render(request, 'news/create.html')
+
+
+
+def get_profile(request):
+    user_id = request.user.id
+    user = User.objects.filter(id=user_id).first()
+
+
+    user_data = {
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email,
+        "username": user.username,
+        "number_of_posts": 0
+    }
+
+    return render(request, 'news/profile.html', context=user_data)
