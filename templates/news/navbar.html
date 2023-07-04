@@ -11,8 +11,9 @@
         <div class="nav-text">
             <div class="log-in">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'create' %}" class="button-white">Create</a>
+                    <a href="{% url 'create' %}" class="button">Create</a>
                     <a href="{% url 'profile' %}" class="button-transparent">Profile</a>
+                    <a href="{% url 'logout' %}" class="button-red">logout</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="button-transparent">Log in</a>
                     <a href="{% url 'signup' %}" class="button">Sign Up</a>

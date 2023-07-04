@@ -9,6 +9,15 @@ html{
     scroll-behavior: smooth;
 }
 
+.button-red{
+    color: #ff0640;
+    background: #fff;
+    display: inline-block;
+    border-radius: 25px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: solid 1px #ff0640;
+}
 
 .button-transparent{
     color: #005AE2;

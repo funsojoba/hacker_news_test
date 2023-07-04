@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 # Create your views here.
 
@@ -53,6 +53,10 @@ def signup(request):
     
     return render(request, 'auth/signup.html')
 
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 
 def forgot_password(request):
