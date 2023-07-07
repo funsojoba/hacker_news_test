@@ -1,23 +1,25 @@
-FROM python:3.8.0-slim as builder
+# Dockerfile
 
+# Use a base image with Python and Django installed
+FROM python:3.9
+
+# Set the working directory
 WORKDIR /app
 
-ENV PYTHONUNBUFFERED 1
+# Copy the Django project code to the container
+COPY . /app
 
-COPY ./requirements.txt .
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN apt-get update \
-    && apt-get install gcc python-dev libpq-dev postgresql-client -y \
-    && apt-get update -y && apt-get upgrade -y && apt-get install -y --no-install-recommends binutils libproj-dev gdal-bin libgdal-dev python3-gdal \
-    && apt-get clean
+# Copy the entrypoint script to the container
+COPY entrypoint.sh /app/entrypoint.sh
 
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+# Make the entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
 
-COPY . .
+# Expose the port on which your Django app will run
+EXPOSE 8000
 
-COPY ./build.sh .
-
-RUN chmod +x /build.sh
-
-CMD ["/build.sh"]
+# Set the entrypoint to run the script
+ENTRYPOINT ["/app/entrypoint.sh"]

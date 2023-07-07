@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app:/app
+    depends_on:
+      - redis
+      - celery
+    entrypoint: /app/entrypoint.sh
+
+  redis:
+    image: redis:latest
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
+    depends_on:
+      - redis
+    entrypoint: /app/entrypoint.sh celery -A CORE worker --loglevel=info

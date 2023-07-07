@@ -50,7 +50,7 @@ html{
 }
 
 .button-white:hover{
-    transform: scale(1.12);
+    background: #ebebeb;
 }
 .blue{
     color: #005AE2;
@@ -263,6 +263,8 @@ body{
     border-radius: 20px;
     border: solid 1px #262C3A;
     color: #fff;
+    overflow-x: scroll;
+    position:relative
 }
 
 .container .detial-info{
@@ -279,6 +281,16 @@ body{
 }
 .profile-card hr{
     margin-bottom: 20px;
+}
+
+.profile-card a{
+    display: inline-block;
+    color: #b4ffd7;
+    text-decoration: none;
+}
+
+.profile-card a:hover{
+    text-decoration: underline;
 }
 
 .card-wrapper .card:hover{
@@ -316,7 +328,9 @@ body{
     color: #000000;
     padding: 5px 10px;
     position: absolute;
-    right: 0;
+    top: -5px;
+    right: -5px;
+    z-index: 2;
 }
 
 .type{

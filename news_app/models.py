@@ -28,6 +28,7 @@ class News(models.Model):
     news_type = models.CharField(max_length=200)
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     by = models.CharField(max_length=256)
+    url = models.URLField(null=True, blank=True)
 
     is_hacker_news = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

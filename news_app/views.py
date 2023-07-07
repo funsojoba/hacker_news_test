@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
+from django.db.models import Q
+
 from django.contrib.auth.models import User
 from .models import News
 from haystack.generic_views import SearchView
@@ -35,7 +37,7 @@ def home(request):
 
 
 def details(request, id):
-    news = News.objects.filter(id=id).first()
+    news = get_object_or_404(News, id=id)
     context = {
                 'by': news.by, 
                 'descendants': news.descendants, 
@@ -47,7 +49,9 @@ def details(request, id):
                 'type': news.news_type,
                 'is_hacker_news': news.is_hacker_news,
                 'time': news.time,
-                'can_edit': news.user == request.user
+                'can_edit': news.user == request.user,
+                'url': news.url,
+                'year': timezone.now().year
                 }
 
     return render(request, 'news/details.html', context=context)
@@ -98,6 +102,12 @@ def news_update(request, id):
 
 def news_search(request):
     query = request.GET.get('q')
-    news = News.objects.filter(title__icontains=query)
+    news = News.objects.filter(
+        Q(text__icontains=query) | Q(title__icontains=query) | Q(by__icontains=query))
     context = {'news': news, 'query': query}
     return render(request, 'news/index.html', context)
+
+
+
+def page_not_found(request, exception):
+    return render(request, '404.html', status=404)

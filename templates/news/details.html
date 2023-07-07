@@ -11,8 +11,17 @@
     {% endif %}
     <div class="card-wrapper">
         <div class="profile-card">
+            {% if is_hacker_news %}
+                <small class="is-hacker-news white-color">HackerNews News</small>
+            {% endif %}
             <h2>{{title}}</h2>
-            <p>{{text}}</p>
+            {% if text %}
+                <p>{{text}}</p>
+            {% endif %}
+
+            {% if url %}
+                <a href="{{url}}" target="_blank">{{url}}</a>
+            {% endif %}
         <div>
 
         <div class="detial-info">
@@ -20,9 +29,6 @@
             <small class="type white-color">Type: {{type}}</small>
             <small class="score white-color">Score: {{score}}</small>
             <small class="time white-color">{{time|timestamp_to_date }}</small>
-            {% if is_hacker_news %}
-                <small class="is-hacker-news white-color">HackerNews News</small>
-            {% endif %}
         </div>
 
         {% if kids %}
