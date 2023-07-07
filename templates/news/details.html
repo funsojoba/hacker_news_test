@@ -25,9 +25,13 @@
             {% endif %}
         </div>
 
-        <div class="sub">
-            
-        </div>
+        {% if kids %}
+            <div class="sub">
+                {% for el in kids  %}
+                    <a href="#">{{el}}</a> &nbsp;
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 
 </div>

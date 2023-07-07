@@ -13,9 +13,15 @@
         <div class="filter-wrapper">
             <div class="filter">
                 <small>Filter</div>
-                <button class="button-white">Story</button>
-                <button class="button-white">Job</button>
-                <button class="button-white">Poll</button>
+                <form method="GET" action="{% url 'home' %}">
+                    <select name="type">
+                        <option value="">All</option>
+                        <option value="Story" {% if filter_type == 'Story' %}selected{% endif %}>Story</option>
+                        <option value="Job" {% if filter_type == 'Job' %}selected{% endif %}>Job</option>
+                        <option value="Poll" {% if filter_type == 'Poll' %}selected{% endif %}>Poll</option>
+                    </select>
+                    <button class="button-white" type="submit">Filter</button>
+                </form>
             </div>
         </div>
     </div>

@@ -421,3 +421,20 @@ footer{
     display: inline-block;
     text-decoration: none;
 }
+
+.sub{
+    margin-top: 30px;
+    background: #262C3A;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.sub a{
+    text-decoration: none;
+    color: #b4ffd7;
+    transition: all 300ms ease;
+}
+
+.sub a:hover{
+    text-decoration: underline;
+}

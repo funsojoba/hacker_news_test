@@ -17,12 +17,18 @@ from .forms import NewsForm
 
 def home(request):
     message = request.GET.get('message')
+    filter_type = request.GET.get('type')
+    
     data = News.objects.all()
+
+    if filter_type:
+        data = data.filter(news_type__icontains=filter_type)
     context ={
         'year':timezone.now().year,
         'data': data,
         'user': request.user,
-        'message': message
+        'message': message,
+        'filter_type':filter_type
     }
     return render(request, 'news/index.html', context)
 
