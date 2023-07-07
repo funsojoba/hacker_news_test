@@ -4,57 +4,69 @@ from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
+from .models import News
+from haystack.generic_views import SearchView
 
 # Create your views here.
 
 
 def home(request):
-    data = [
-        {
-            'by': 'bears-n-beets', 
-            'descendants': 316, 
-            'id': 36543894, 
-            'kids': [36544618, 36544484, 36544231, 36544747, 36545454, 36544706, 36545010, 36546579, 36546642, 36545516, 36543952, 36544560, 36544250, 36545049, 36548241, 36544686, 36546511, 36544074, 36545323, 36546587, 36545146, 36544533, 36544909, 36546173, 36544251, 36544600, 36547499, 36545196, 36546583, 36545733, 36545582, 36545598, 36545310, 36545819, 36545627, 36545650, 36544921, 36546529, 36546643, 36544197, 36544905, 36545910, 36545235, 36546172, 36546439, 36544416, 36544640, 36545249, 36547347, 36547526, 36545646, 36546367, 36544271, 36543921, 36544164, 36545301, 36544547, 36546687, 36546686, 36546017, 36547579, 36545144, 36544580, 36546852, 36546703, 36546567, 36546516, 36545246, 36545556, 36548566, 36545097, 36544265], 
-            'score': 839, 
-            'text': 'I was actively using the app on my phone and it suddenly crashed at 4:10pm PDT. I thought it was just my phone acting up but then I realized that’s about 12am UTC.  With the death of Apollo also goes the metaphorical death of all the best parts (IMO) of the internet: open-source, creativity, entrepreneurial spirit. Sad day. I guess I’ll go outside now.<p>Edit: sorry, Apollo wasn’t open source. That’s what happens when I make a post while two beers deep I guess. Hopefully you get the general spirit of what I was trying to convey.', 
-            'time': 1688166925, 
-            'title': 'Apollo is dead. Long live Apollo', 'type': 'story'}, {'by': 'phindisperfect', 'descendants': 0, 'id': 36548772, 'score': 3, 'text': 'And interesting  and significant things you&#x27;ve discover so far? Thinking about getting into it', 'time': 1688209095, 'title': "Ask HN: Interesting open source LLMs you've been exploring?", 'type': 'story'},
-            {'by': 'Backslasher', 'descendants': 3, 'id': 36548179, 'kids': [36548312, 36548381, 36548214], 'score': 3, 'text': 'I&#x27;m a heavy user of user profiles on Firefox[1] and Chrome[2].\nThey allow complete separation of addons, history, cookies, settings between one profile and another.\nI use them to separate my work context from private life context, and recently different aspects from each other (e.g. different workplaces, project research).\nI can&#x27;t find these features in Android browsers. The best I have is using different browsers instead of different profiles, but it&#x27;s nowhere as convenient.<p>My best theories are:\n1. Android forbids creating some sort of profile management inside an app, either with playstore rules or technically (can&#x27;t dynamically choose a cookie store)\n2. Mobile browser development is done completely separately from non-mobile ones, and this is not a priority for the dev teams for some reason.<p>Do you have any insight? Is this a need shared by others or is it just me?<p>[1] https:&#x2F;&#x2F;support.mozilla.org&#x2F;en-US&#x2F;kb&#x2F;profile-manager-create-remove-switch-firefox-profiles\n[2] https:&#x2F;&#x2F;support.google.com&#x2F;chrome&#x2F;answer&#x2F;2364824', 'time': 1688201905, 'title': 'Ask HN: Why are there no profiles on Android browsers?', 'type': 'story'}, 
-            {'by': 'miki_tyler', 'descendants': 302, 'id': 36530036, 'kids': [36530645, 36530825, 36533085, 36530279, 36532694, 36531292, 36530469, 36534599, 36530908, 36531303, 36532692, 36534862, 36530266, 36534740, 36539744, 36538794, 36530652, 36532960, 36536504, 36547686, 36532819, 36532740, 36530859, 36532894, 36530826, 36537694, 36533024, 36534316, 36537293, 36530688, 36543146, 36534670, 36541053, 36533933, 36530225, 36530745, 36534145, 36530861, 36533185, 36536095, 36531010, 36538354, 36533205, 36538493, 36530768, 36534116, 36531422, 36535199, 36531727, 36530838, 36533423, 36540623, 36533038, 36532747, 36531367, 36538148], 'score': 180, 'text': 'Is there an Android phone available that comes without any pre-installed bloatware, offers long-term support, and ensures access to the latest Android versions?', 'time': 1688094173, 'title': 'Ask HN: Stock Android phone free of bloatware?', 'type': 'story'}, 
-            {'by': 'Backslasher', 'descendants': 3, 'id': 36548179, 'kids': [36548312, 36548381, 36548214], 'score': 3, 'text': 'I&#x27;m a heavy user of user profiles on Firefox[1] and Chrome[2].\nThey allow complete separation of addons, history, cookies, settings between one profile and another.\nI use them to separate my work context from private life context, and recently different aspects from each other (e.g. different workplaces, project research).\nI can&#x27;t find these features in Android browsers. The best I have is using different browsers instead of different profiles, but it&#x27;s nowhere as convenient.<p>My best theories are:\n1. Android forbids creating some sort of profile management inside an app, either with playstore rules or technically (can&#x27;t dynamically choose a cookie store)\n2. Mobile browser development is done completely separately from non-mobile ones, and this is not a priority for the dev teams for some reason.<p>Do you have any insight? Is this a need shared by others or is it just me?<p>[1] https:&#x2F;&#x2F;support.mozilla.org&#x2F;en-US&#x2F;kb&#x2F;profile-manager-create-remove-switch-firefox-profiles\n[2] https:&#x2F;&#x2F;support.google.com&#x2F;chrome&#x2F;answer&#x2F;2364824', 'time': 1688201905, 'title': 'Ask HN: Why are there no profiles on Android browsers?', 'type': 'story'}, 
-            {'by': 'miki_tyler', 'descendants': 302, 'id': 36530036, 'kids': [36530645, 36530825, 36533085, 36530279, 36532694, 36531292, 36530469, 36534599, 36530908, 36531303, 36532692, 36534862, 36530266, 36534740, 36539744, 36538794, 36530652, 36532960, 36536504, 36547686, 36532819, 36532740, 36530859, 36532894, 36530826, 36537694, 36533024, 36534316, 36537293, 36530688, 36543146, 36534670, 36541053, 36533933, 36530225, 36530745, 36534145, 36530861, 36533185, 36536095, 36531010, 36538354, 36533205, 36538493, 36530768, 36534116, 36531422, 36535199, 36531727, 36530838, 36533423, 36540623, 36533038, 36532747, 36531367, 36538148], 'score': 180, 'text': 'Is there an Android phone available that comes without any pre-installed bloatware, offers long-term support, and ensures access to the latest Android versions?', 'time': 1688094173, 'title': 'Ask HN: Stock Android phone free of bloatware?', 'type': 'story'}, 
-            {'by': 'Backslasher', 'descendants': 3, 'id': 36548179, 'kids': [36548312, 36548381, 36548214], 'score': 3, 'text': 'I&#x27;m a heavy user of user profiles on Firefox[1] and Chrome[2].\nThey allow complete separation of addons, history, cookies, settings between one profile and another.\nI use them to separate my work context from private life context, and recently different aspects from each other (e.g. different workplaces, project research).\nI can&#x27;t find these features in Android browsers. The best I have is using different browsers instead of different profiles, but it&#x27;s nowhere as convenient.<p>My best theories are:\n1. Android forbids creating some sort of profile management inside an app, either with playstore rules or technically (can&#x27;t dynamically choose a cookie store)\n2. Mobile browser development is done completely separately from non-mobile ones, and this is not a priority for the dev teams for some reason.<p>Do you have any insight? Is this a need shared by others or is it just me?<p>[1] https:&#x2F;&#x2F;support.mozilla.org&#x2F;en-US&#x2F;kb&#x2F;profile-manager-create-remove-switch-firefox-profiles\n[2] https:&#x2F;&#x2F;support.google.com&#x2F;chrome&#x2F;answer&#x2F;2364824', 'time': 1688201905, 'title': 'Ask HN: Why are there no profiles on Android browsers?', 'type': 'story'}, 
-            {'by': 'miki_tyler', 'descendants': 302, 'id': 36530036, 'kids': [36530645, 36530825, 36533085, 36530279, 36532694, 36531292, 36530469, 36534599, 36530908, 36531303, 36532692, 36534862, 36530266, 36534740, 36539744, 36538794, 36530652, 36532960, 36536504, 36547686, 36532819, 36532740, 36530859, 36532894, 36530826, 36537694, 36533024, 36534316, 36537293, 36530688, 36543146, 36534670, 36541053, 36533933, 36530225, 36530745, 36534145, 36530861, 36533185, 36536095, 36531010, 36538354, 36533205, 36538493, 36530768, 36534116, 36531422, 36535199, 36531727, 36530838, 36533423, 36540623, 36533038, 36532747, 36531367, 36538148], 'score': 180, 'text': 'Is there an Android phone available that comes without any pre-installed bloatware, offers long-term support, and ensures access to the latest Android versions?', 'time': 1688094173, 'title': 'Ask HN: Stock Android phone free of bloatware?', 'type': 'story'}, 
-            {'by': 'Backslasher', 'descendants': 3, 'id': 36548179, 'kids': [36548312, 36548381, 36548214], 'score': 3, 'text': 'I&#x27;m a heavy user of user profiles on Firefox[1] and Chrome[2].\nThey allow complete separation of addons, history, cookies, settings between one profile and another.\nI use them to separate my work context from private life context, and recently different aspects from each other (e.g. different workplaces, project research).\nI can&#x27;t find these features in Android browsers. The best I have is using different browsers instead of different profiles, but it&#x27;s nowhere as convenient.<p>My best theories are:\n1. Android forbids creating some sort of profile management inside an app, either with playstore rules or technically (can&#x27;t dynamically choose a cookie store)\n2. Mobile browser development is done completely separately from non-mobile ones, and this is not a priority for the dev teams for some reason.<p>Do you have any insight? Is this a need shared by others or is it just me?<p>[1] https:&#x2F;&#x2F;support.mozilla.org&#x2F;en-US&#x2F;kb&#x2F;profile-manager-create-remove-switch-firefox-profiles\n[2] https:&#x2F;&#x2F;support.google.com&#x2F;chrome&#x2F;answer&#x2F;2364824', 'time': 1688201905, 'title': 'Ask HN: Why are there no profiles on Android browsers?', 'type': 'story'}, 
-            {'by': 'miki_tyler', 'descendants': 302, 'id': 36530036, 'kids': [36530645, 36530825, 36533085, 36530279, 36532694, 36531292, 36530469, 36534599, 36530908, 36531303, 36532692, 36534862, 36530266, 36534740, 36539744, 36538794, 36530652, 36532960, 36536504, 36547686, 36532819, 36532740, 36530859, 36532894, 36530826, 36537694, 36533024, 36534316, 36537293, 36530688, 36543146, 36534670, 36541053, 36533933, 36530225, 36530745, 36534145, 36530861, 36533185, 36536095, 36531010, 36538354, 36533205, 36538493, 36530768, 36534116, 36531422, 36535199, 36531727, 36530838, 36533423, 36540623, 36533038, 36532747, 36531367, 36538148], 'score': 180, 'text': 'Is there an Android phone available that comes without any pre-installed bloatware, offers long-term support, and ensures access to the latest Android versions?', 'time': 1688094173, 'title': 'Ask HN: Stock Android phone free of bloatware?', 'type': 'story'}, 
-            {'by': 'cryptography', 'descendants': 0, 'id': 36547609, 'score': 6, 'text': 'Hello fellow HN members,<p>As more and more people transition into remote work or the &#x27;digital nomad&#x27; lifestyle, we&#x27;re finding ourselves in a world where our living and working environments can be miles apart, both figuratively and literally.<p>The advantages are evident - flexibility, personal satisfaction, and an opportunity to experience new cultures. However, one aspect that doesn&#x27;t get as much attention is the bureaucracy involved when living abroad. From managing visa applications to understanding tax implications, handling healthcare to setting up a bank account, the process can be quite daunting.<p>For those of you living this lifestyle, I&#x27;d appreciate your insights on the following:<p>- What bureaucratic challenges have you encountered while living and working abroad?\n- How have you overcome these challenges?\n- Are there certain countries where it&#x27;s been more or less challenging to deal with these issues?\n- Do you utilize any specific tools or resources that have facilitated this process?\n- Your insights would be invaluable to both existing digital nomads and those considering this path. I believe this discussion can contribute to a more thorough understanding of the practicalities of remote work and digital nomadism.<p>Thank you in advance for your time and responses!', 'time': 1688196041, 'title': 'Ask HN: Digital Nomads, How Do You Navigate Bureaucracy While Living Abroad?', 
-            'type': 'story'}]
-
+    message = request.GET.get('message')
+    data = News.objects.all()
     context ={
         'year':timezone.now().year,
         'data': data,
-        'user': request.user
+        'user': request.user,
+        'message': message
     }
     return render(request, 'news/index.html', context)
 
 
 
 def details(request, id):
+    news = News.objects.filter(id=id).first()
     context = {
-                'by': 'Backslasher', 
-                'descendants': 3, 
-                'id': 36548179, 
-                'kids': [36548312, 36548381, 36548214], 
-                'score': 3, 
-                'text': 'I&#x27;m a heavy user of user profiles on Firefox[1] and Chrome[2].\nThey allow complete separation of addons, history, cookies, settings between one profile and another.\nI use them to separate my work context from private life context, and recently different aspects from each other (e.g. different workplaces, project research).\nI can&#x27;t find these features in Android browsers. The best I have is using different browsers instead of different profiles, but it&#x27;s nowhere as convenient.<p>My best theories are:\n1. Android forbids creating some sort of profile management inside an app, either with playstore rules or technically (can&#x27;t dynamically choose a cookie store)\n2. Mobile browser development is done completely separately from non-mobile ones, and this is not a priority for the dev teams for some reason.<p>Do you have any insight? Is this a need shared by others or is it just me?<p>[1] https:&#x2F;&#x2F;support.mozilla.org&#x2F;en-US&#x2F;kb&#x2F;profile-manager-create-remove-switch-firefox-profiles\n[2] https:&#x2F;&#x2F;support.google.com&#x2F;chrome&#x2F;answer&#x2F;2364824', 'time': 1688201905, 'title': 'Ask HN: Why are there no profiles on Android browsers?', 
-                'type': 'story'}
+                'by': news.by, 
+                'descendants': news.descendants, 
+                'id': news.id, 
+                'kids': news.kids, 
+                'score': news.score, 
+                'text': news.text, 
+                'title': news.title,
+                'type': news.news_type,
+                'is_hacker_news': news.is_hacker_news,
+                'time': news.time
+                }
+
     return render(request, 'news/details.html', context=context)
 
 
+@login_required
 def create_post(request):
-    return render(request, 'news/create.html')
+    if request.method == 'POST':
+        news_type = request.POST.get('type')
+        text = request.POST.get('description')
+        title = request.POST.get('title')
+        is_hacker_news = False
+
+        by = request.user.first_name + " " + request.user.last_name
+        
+        # Create a new News object
+        news = News(
+            news_type=news_type,
+            by=by,
+            user=request.user,
+            text=text,
+            title=title,
+            is_hacker_news=is_hacker_news
+        )
+        news.save()
+        message = "news created successfully"
+        return render(request, "news/create.html", {'message': message})
+    return render(request, "news/create.html")
 
 
 
@@ -72,3 +84,11 @@ def get_profile(request):
     }
 
     return render(request, 'news/profile.html', context=user_data)
+
+
+
+def news_search(request):
+    query = request.GET.get('q')
+    news = News.objects.filter(title__icontains=query)
+    context = {'news': news, 'query': query}
+    return render(request, 'news/index.html', context)

@@ -4,8 +4,11 @@
 {% block content %}
 
 <div class="container">
+    {% if message %}
+        <div class="message">{{message}}</div>
+    {% endif %}
     <div class="form-wrapper">
-        <form action="" method="">
+        <form action="{% url 'create' %}" method="POST">
             {% csrf_token %}
             <h2>Create Post</h2>
             
@@ -23,8 +26,8 @@
                 <label> Type</label>
                 <select name="type">
                     <option value="story">Story</option>
-                    <option value="story">Story</option>
-                    <option value="story">Story</option>
+                    <option value="job">Job</option>
+                    <option value="poll">Poll</option>
                 </select>
             </div>
 

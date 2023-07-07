@@ -15,6 +15,9 @@
             <small class="type white-color">Type: {{type}}</small>
             <small class="score white-color">Score: {{score}}</small>
             <small class="time white-color">{{time|timestamp_to_date }}</small>
+            {% if is_hacker_news %}
+                <small class="is-hacker-news white-color">HackerNews News</small>
+            {% endif %}
         </div>
     </div>
 

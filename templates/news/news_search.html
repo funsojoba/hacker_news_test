@@ -1,0 +1,18 @@
+{% extends "news/base.html" %}
+
+{% block content %}
+<form method="get" action=".">
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+{% if query %}
+    <h2>Search results for '{{ query }}'</h2>
+    {% for result in page %}
+        <h3>{{ result.object.title }}</h3>
+        <!-- Display other relevant information from the News model -->
+    {% empty %}
+        <p>No results found.</p>
+    {% endfor %}
+{% endif %}
+{% endblock %}

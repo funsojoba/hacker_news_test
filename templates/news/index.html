@@ -6,35 +6,61 @@
 <div class="container">
     <div class="search-bar">
         <div class="nav-form">
-            <form>
-                <input type="search" placeholder="search" name="search"/>
+            <form action="{% url 'news_search' %}" method='GET'>
+                <input type="search" placeholder="search" name="q"/>
             </form>
         </div>
         <div class="filter-wrapper">
             <div class="filter">
                 <small>Filter</div>
                 <button class="button-white">Story</button>
-                <button class="button-white">Story</button>
-                <button class="button-white">Story</button>
+                <button class="button-white">Job</button>
+                <button class="button-white">Poll</button>
             </div>
         </div>
     </div>
-
+    {% if message %}
+        <div class="message">{{message}}</div>
+    {% endif %}
     <div class="card-wrapper">
-        {% for el in data%}
-            <a class="card" href="{% url 'details' el.id %}">
-                <h2>{{el.title}}</h2>
-                <p>{{el.text|truncatechars:100}}</p>
-                <div class="info">
-                    <small class="author">By: {{el.by}}</small>
-                    <small class="type">Type: {{el.type}}</small>
-                </div>
-                <div class="score-wrapper">
-                    <small class="score">Score: {{el.score}}</small>
-                    <small clßass="time">{{el.time|timestamp_to_date }}</small>
-                </div>
-            </a>
-        {% endfor%}
+
+        {% if query %}
+            {% for el in news%}
+                <a class="card" href="{% url 'details' el.id %}">
+                    {% if el.is_hacker_news %}
+                        <div class="hacker-news-tag"></div>
+                    {% endif %}
+                    <h2>{{el.title}}</h2>
+                    <p>{{el.text|truncatechars:100}}</p>
+                    <div class="info">
+                        <small class="author">By: {{el.by}}</small>
+                        <small class="type">Type: {{el.news_type}}</small>
+                    </div>
+                    <div class="score-wrapper">
+                        <small class="score">Score: {{el.score}}</small>
+                        <small clßass="time">{{el.time|timestamp_to_date }}</small>
+                    </div>
+                </a>
+            {% endfor%}
+        {% else %}
+            {% for el in data%}
+                <a class="card" href="{% url 'details' el.id %}">
+                    {% if el.is_hacker_news %}
+                        <div class="hacker-news-tag"></div>
+                    {% endif %}
+                    <h2>{{el.title}}</h2>
+                    <p>{{el.text|truncatechars:100}}</p>
+                    <div class="info">
+                        <small class="author">By: {{el.by}}</small>
+                        <small class="type">Type: {{el.news_type}}</small>
+                    </div>
+                    <div class="score-wrapper">
+                        <small class="score">Score: {{el.score}}</small>
+                        <small clßass="time">{{el.time|timestamp_to_date }}</small>
+                    </div>
+                </a>
+            {% endfor%}
+        {% endif %}
         
     </div>
 
