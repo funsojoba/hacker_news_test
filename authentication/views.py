@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth.decorators import login_required
+
+from news_app.models import News
 
 # Create your views here.
 
@@ -61,3 +64,22 @@ def logout_view(request):
 
 def forgot_password(request):
     return render(request, 'auth/forgot_password.html')
+
+
+
+@login_required
+def get_profile(request):
+    user_id = request.user.id
+    user = User.objects.filter(id=user_id).first()
+
+
+    user_data = {
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email,
+        "username": user.username,
+        "number_of_posts": News.objects.filter(user=request.user).count()
+    }
+
+    return render(request, 'news/profile.html', context=user_data)
+

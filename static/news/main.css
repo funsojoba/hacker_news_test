@@ -407,3 +407,17 @@ footer{
     margin: auto;
     margin-top:10px;
 }
+
+
+.edit{
+    padding: 15px;
+}
+
+.edit a{
+    background: #06cdff;
+    color: #000000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+}

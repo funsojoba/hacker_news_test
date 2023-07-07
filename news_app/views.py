@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import News
 from haystack.generic_views import SearchView
+
+from .forms import NewsForm
 
 # Create your views here.
 
@@ -38,7 +40,8 @@ def details(request, id):
                 'title': news.title,
                 'type': news.news_type,
                 'is_hacker_news': news.is_hacker_news,
-                'time': news.time
+                'time': news.time,
+                'can_edit': news.user == request.user
                 }
 
     return render(request, 'news/details.html', context=context)
@@ -69,21 +72,21 @@ def create_post(request):
     return render(request, "news/create.html")
 
 
+@login_required
+def news_update(request, id):
+    news = get_object_or_404(News, id=id)
 
-def get_profile(request):
-    user_id = request.user.id
-    user = User.objects.filter(id=user_id).first()
+    if request.method == 'POST':
+        form = NewsForm(request.POST, instance=news)
+        if form.is_valid():
+            form.save()
+            return redirect('details', id=news.id)
+    else:
+        form = NewsForm(instance=news)
 
+    context = {'form': form, 'news': news}
+    return render(request, 'news/news_update.html', context)
 
-    user_data = {
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "email": user.email,
-        "username": user.username,
-        "number_of_posts": 0
-    }
-
-    return render(request, 'news/profile.html', context=user_data)
 
 
 

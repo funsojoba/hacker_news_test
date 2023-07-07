@@ -1,0 +1,29 @@
+{% extends "news/base.html" %}
+
+{% block content %}
+
+
+<div class="form-wrapper">
+    <form method="POST" action="{% url 'update' id=news.id %}">
+    <h2>Update News</h2>
+    {% csrf_token %}
+    <div class="form-input">
+        <label> Title</label>
+        {{ form.title }}
+    </div>
+    
+    <div class="form-input">
+        <label> Text</label>
+        {{ form.text }}
+    </div>
+    
+    <div class="form-group">
+        <label>Type</label> &nbsp;
+        {{ form.news_type }}
+    </div>
+
+    <button class="button-white">Update</button>
+</form>
+</div>
+
+{% endblock content %}
