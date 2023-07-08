@@ -12,7 +12,7 @@ services:
     depends_on:
       - redis
       - celery
-    entrypoint: /app/entrypoint.sh
+    entrypoint: /entrypoint.sh
 
   redis:
     image: redis:latest
@@ -25,4 +25,4 @@ services:
       - ./app:/app
     depends_on:
       - redis
-    entrypoint: /app/entrypoint.sh celery -A CORE worker --loglevel=info
+    entrypoint: /entrypoint.sh celery -A CORE worker --loglevel=info

@@ -12,7 +12,7 @@
         </div>
         <div class="filter-wrapper">
             <div class="filter">
-                <small>Filter</div>
+                <small class="filter-text">Filter</small>
                 <form method="GET" action="{% url 'home' %}">
                     <select name="type">
                         <option value="">All</option>
@@ -29,7 +29,6 @@
         <div class="message">{{message}}</div>
     {% endif %}
     <div class="card-wrapper">
-
         {% if query %}
             {% for el in news%}
                 <a class="card" href="{% url 'details' el.id %}">
@@ -59,7 +58,7 @@
                     {% if el.text %}
                         <p>{{el.text|truncatechars:100}}</p>
                     {% endif %}
-                    
+
                     <div class="info">
                         <small class="author">By: {{el.by}}</small>
                         <small class="type">Type: {{el.news_type}}</small>
@@ -72,8 +71,22 @@
             {% endfor%}
         {% endif %}
         
-    </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if data.has_previous %}
+                    <a href="?page=1" class="page-icon"><<</a>
+                    <a href="?page={{ data.previous_page_number }}" class="page-icon"><</a>
+                {% endif %}
 
+                <span class="current-page">{{ data.number }}</span>
+
+                {% if data.has_next %}
+                    <a href="?page={{ data.next_page_number }}" class="page-icon">></a>
+                    <a href="?page={{ data.paginator.num_pages }}" class="page-icon"> >></a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}

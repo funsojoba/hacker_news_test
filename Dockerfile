@@ -1,25 +1,24 @@
-# Dockerfile
+FROM python:3.8.0-slim as builder
 
-# Use a base image with Python and Django installed
-FROM python:3.9
-
-# Set the working directory
 WORKDIR /app
 
-# Copy the Django project code to the container
 COPY . /app
 
-# Install dependencies
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+  # dependencies for building Python packages
+  build-essential \
+  # psycopg2 dependencies
+  libpq-dev \
+  # cleaning up unused files
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+  && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entrypoint script to the container
-COPY entrypoint.sh /app/entrypoint.sh
+COPY entrypoint.sh ./entrypoint.sh
 
-# Make the entrypoint script executable
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
-# Expose the port on which your Django app will run
-EXPOSE 8000
-
-# Set the entrypoint to run the script
-ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["./entrypoint.sh"]

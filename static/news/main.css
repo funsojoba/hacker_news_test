@@ -5,9 +5,6 @@
     font-family: 'Poppins', sans-serif;
 }
 
-html{
-    scroll-behavior: smooth;
-}
 
 .button-red{
     color: #ff0640;
@@ -150,8 +147,13 @@ nav .nav-bugger{
     display: none;
 }
 
-/* s
-@media only screen and (max-width: 1205px){
+
+img{
+    width: 100%;
+}
+
+
+@media only screen and (max-width: 750px){
     nav{
         width: 100vw;
     }
@@ -165,22 +167,37 @@ nav .nav-bugger{
         box-shadow: -5px 5px 30px rgba(30, 52, 72, 0.056);
         display: none;
     }
-    nav .nav-text ul{
-        flex-direction: column;
-    }
-    
+
     nav .nav-text .log-in{
         display: flex;
         flex-direction: column;
+        padding: 5px;
     }
+
+    nav .nav-text .log-in a{
+        margin: 5px auto;
+    }
+    
 
     nav .nav-bugger{
         width: 40px;
         display: block;
         cursor: pointer;
     }
+
+    .filter-text{
+        display: none;
+    }
+/* 
+    .container .search-bar{
+        flex-direction: column;
+    }
+
+    input{
+        width: 100%;
+    } */
     
-} */
+}
 
 
 .button:hover{
@@ -412,6 +429,16 @@ footer{
     border-radius: 10px;
 }
 
+.container{
+    position: relative;
+}
+
+.container .pagination{
+    width: 100vw;
+    padding: 15px;
+    display: flex;
+}
+
 .container .message{
     background: #b4ffd7;
     color: #000000;
@@ -451,4 +478,36 @@ footer{
 
 .sub a:hover{
     text-decoration: underline;
+}
+
+
+.page-icon{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #191F2D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2.5px;
+    text-decoration: none;
+}
+
+.current-page{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #9fecff;
+    color: #191F2D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.step-links{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

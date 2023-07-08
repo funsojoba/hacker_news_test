@@ -1,33 +1,35 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
+from django.utils import timezone
+from django.contrib import messages
 from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages
-from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 
-from django.db.models import Q
 
-from django.contrib.auth.models import User
 from .models import News
-from haystack.generic_views import SearchView
 
 from .forms import NewsForm
 
-# Create your views here.
-
 
 def home(request):
+    page_number = request.GET.get('page')
     message = request.GET.get('message')
     filter_type = request.GET.get('type')
     
-    data = News.objects.all()
+    news_list = News.objects.all()
 
     if filter_type:
-        data = data.filter(news_type__icontains=filter_type)
+        news_list = data.filter(news_type__icontains=filter_type)
+    
+    paginator = Paginator(news_list, 10)
+    page_obj = paginator.get_page(page_number)
     context ={
         'year':timezone.now().year,
-        'data': data,
+        'data': page_obj,
         'user': request.user,
         'message': message,
         'filter_type':filter_type
